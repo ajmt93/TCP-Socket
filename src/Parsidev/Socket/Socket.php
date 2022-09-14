@@ -96,13 +96,11 @@ class Socket
             }
 
             $out_final .= $out;
-            echo "out_final: " . $out_final . "\n";
 
             if(substr($out, -1) === "\x03") {
                 break;
             }
         }
-        echo "exits loop\n";
         return $out_final;
     }
 
@@ -122,7 +120,6 @@ class Socket
             }
 
             $out_final .= $out;
-            echo "out_final: " . $out_final . "\n";
 
             if(substr($out, -1) === "\x03") {
                 break;

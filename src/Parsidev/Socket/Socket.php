@@ -89,12 +89,21 @@ class Socket
             $errorMessage = socket_strerror($errorCode);
             throw new RuntimeException($errorMessage, $errorCode);
         }
-        $out = '';
-        while($out = @socket_read($socket, 5120)) {
-            if($out = trim($out))
+        $out_final = '';
+        while ($out = @socket_read($socket, 5120)) {
+            if ($out == false || $out == null || $out == '') {
                 break;
+            }
+
+            $out_final .= $out;
+            echo "out_final: " . $out_final . "\n";
+
+            if(substr($out, -1) === "\x03") {
+                break;
+            }
         }
-        return $out != false? $out : "No Data!";
+        echo "exits loop\n";
+        return $out_final;
     }
 
     public function sendMessageTo($socket, $message, $ip, $port)
@@ -105,11 +114,20 @@ class Socket
             $errormsg = socket_strerror($errorcode);
             throw new RuntimeException($errormsg, $errorcode);
         }
+        $out_final = '';
         $out = '';
         while($out = @socket_read($socket, 5120)) {
-            if($out = trim($out))
+            if ($out == false || $out == null || $out == '') {
                 break;
+            }
+
+            $out_final .= $out;
+            echo "out_final: " . $out_final . "\n";
+
+            if(substr($out, -1) === "\x03") {
+                break;
+            }
         }
-        return $out;
+        return $out_final;
     }
 }
